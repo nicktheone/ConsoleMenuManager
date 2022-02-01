@@ -5,7 +5,7 @@
         private List<Page> pages;
         private Stack<Page> history;
 
-        public Page CurrentPage
+        private Page CurrentPage
         {
             get { return history.Peek(); }
         }
