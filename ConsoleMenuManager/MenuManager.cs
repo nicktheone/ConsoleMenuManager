@@ -2,7 +2,6 @@
 {
     public class MenuManager
     {
-        private readonly string title;
         private List<Page> pages;
         private Stack<Page> history;
 
@@ -12,11 +11,12 @@
         }
 
 
-        public MenuManager(string title)
+        public MenuManager(string title, Page mainPage)
         {
-            this.title = title;
+            Console.Title = title;
             pages = new List<Page>();
             history = new Stack<Page>();
+            history.Push(mainPage);
         }
 
         public void AddPage(Page page)
