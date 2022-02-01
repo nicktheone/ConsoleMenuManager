@@ -11,12 +11,11 @@
         }
 
 
-        public MenuManager(string title, Page mainPage)
+        public MenuManager(string title)
         {
             Console.Title = title;
             pages = new List<Page>();
             history = new Stack<Page>();
-            history.Push(mainPage);
         }
 
         public void AddPage(Page page)
