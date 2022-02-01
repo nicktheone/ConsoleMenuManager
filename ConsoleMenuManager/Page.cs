@@ -4,11 +4,13 @@
     {
         private readonly string prompt;
         private readonly List<Option> options;
+        private readonly MenuManager menuManager;
 
-        public Page(string prompt, List<Option> options)
+        public Page(string prompt, List<Option> options, MenuManager menuManager)
         {
             this.prompt = prompt;
             this.options = options;
+            this.menuManager = menuManager;
         }
 
         public void Display()
