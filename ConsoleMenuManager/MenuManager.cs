@@ -2,16 +2,55 @@
 {
     public class MenuManager
     {
+        private readonly string title;
         private List<Page> pages;
+        private Stack<Page> history;
 
-        public MenuManager()
+        public Page CurrentPage
         {
+            get { return history.Peek(); }
+        }
 
+
+        public MenuManager(string title)
+        {
+            this.title = title;
+            pages = new List<Page>();
+            history = new Stack<Page>();
         }
 
         public void AddPage(Page page)
         {
             pages.Add(page);
+        }
+
+        public void NavigateTo<T>() where T : Page
+        {
+            Type pageType = typeof(T);
+
+            history.Push(pages.Find(x => x.GetType() == pageType)!);
+
+            Console.Clear();
+            CurrentPage.Display();
+        }
+
+        public void NavigateHome()
+        {
+            while (history.Count > 1)
+            {
+                history.Pop();
+            }
+
+            Console.Clear();
+            CurrentPage.Display();
+        }
+
+        public void NavigateBack()
+        {
+            history.Pop();
+
+            Console.Clear();
+            CurrentPage.Display();
         }
     }
 }
