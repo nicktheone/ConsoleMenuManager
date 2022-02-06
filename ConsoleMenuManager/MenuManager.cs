@@ -20,6 +20,11 @@
 
         public void AddPage(Page page)
         {
+            Type type = page.GetType();
+            if (pages.Any(x => x.GetType() == type))
+            {
+                throw new Exception($"Cannot add more than one instance of every Page: {type}");
+            }
             pages.Add(page);
         }
 

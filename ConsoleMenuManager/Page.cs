@@ -28,6 +28,7 @@
             int menuChoice;
             while (!int.TryParse(input, out menuChoice) || menuChoice < 1 || menuChoice > options.Count)
             {
+                Console.WriteLine();
                 Console.WriteLine($"Please enter an integer number between 1 and {options.Count}:");
                 input = Console.ReadLine();
             }
