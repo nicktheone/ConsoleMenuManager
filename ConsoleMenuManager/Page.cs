@@ -4,13 +4,11 @@
     {
         private readonly string prompt;
         private readonly List<Option> options;
-        private readonly MenuManager menuManager;
 
-        public Page(string prompt, List<Option> options, MenuManager menuManager)
+        public Page(string prompt, List<Option> options)
         {
             this.prompt = prompt;
             this.options = options;
-            this.menuManager = menuManager;
         }
 
         public void Display()
@@ -32,7 +30,7 @@
                 Console.WriteLine($"Please enter an integer number between 1 and {options.Count}:");
                 input = Console.ReadLine();
             }
-
+            Console.WriteLine();
             options[menuChoice - 1].callback.Invoke();
         }
     }
