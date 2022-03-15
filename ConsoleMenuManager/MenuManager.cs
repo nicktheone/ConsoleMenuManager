@@ -4,12 +4,11 @@
     {
         private List<Page> pages;
         private Stack<Page> history;
-
         private Page CurrentPage
         {
             get { return history.Peek(); }
         }
-
+        private Dictionary<string, object> cache = new();
 
         public MenuManager(string title)
         {
@@ -55,6 +54,23 @@
 
             Console.Clear();
             CurrentPage.Display();
+        }
+
+        public void SetCache(string key, object value)
+        {
+            cache.Add(key, value);
+        }
+
+        public T GetCache<T>(string key)
+        {
+            object output;
+
+            if (cache.TryGetValue(key, out output!))
+            {
+                return (T)output;
+            }
+
+            throw new KeyNotFoundException(key);
         }
     }
 }
