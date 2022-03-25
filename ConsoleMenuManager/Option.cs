@@ -3,8 +3,8 @@
     public class Option
     {
         internal readonly string name;
-        internal readonly Action callback;
-        public Option(string name, Action callback)
+        internal readonly Func<Task> callback;
+        public Option(string name, Func<Task> callback)
         {
             this.name = name;
             this.callback = callback;

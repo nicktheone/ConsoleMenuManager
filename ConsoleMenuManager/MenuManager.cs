@@ -27,17 +27,20 @@
             pages.Add(page);
         }
 
-        public void NavigateTo<T>() where T : Page
+        public async Task NavigateToAsync<T>() where T : Page
         {
             Type pageType = typeof(T);
 
             history.Push(pages.Find(x => x.GetType() == pageType)!);
 
-            Console.Clear();
-            CurrentPage.Display();
+            while (true)
+            {
+                Console.Clear();
+                await CurrentPage.DisplayAsync();
+            }
         }
 
-        public void NavigateHome()
+        public async Task NavigateHomeAsync()
         {
             while (history.Count > 1)
             {
@@ -45,15 +48,15 @@
             }
 
             Console.Clear();
-            CurrentPage.Display();
+            await CurrentPage.DisplayAsync();
         }
 
-        public void NavigateBack()
+        public async Task NavigateBackAsync()
         {
             history.Pop();
 
             Console.Clear();
-            CurrentPage.Display();
+            await CurrentPage.DisplayAsync();
         }
 
         public void SetCache(string key, object value)

@@ -11,7 +11,7 @@
             this.options = options;
         }
 
-        public void Display()
+        public async Task DisplayAsync()
         {
             Console.WriteLine(prompt);
             Console.WriteLine("-----");
@@ -31,7 +31,7 @@
                 input = Console.ReadLine();
             }
             Console.WriteLine();
-            options[menuChoice - 1].callback.Invoke();
+            await options[menuChoice - 1].callback.Invoke();
         }
     }
 }
