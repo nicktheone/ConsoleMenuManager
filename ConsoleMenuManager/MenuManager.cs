@@ -33,11 +33,8 @@
 
             history.Push(pages.Find(x => x.GetType() == pageType)!);
 
-            while (true)
-            {
-                Console.Clear();
-                await CurrentPage.DisplayAsync();
-            }
+            Console.Clear();
+            await CurrentPage.DisplayAsync();
         }
 
         public async Task NavigateHomeAsync()
