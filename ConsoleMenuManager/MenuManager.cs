@@ -1,76 +1,75 @@
-﻿namespace ConsoleMenuManager
+﻿namespace ConsoleMenuManager;
+
+public class MenuManager
 {
-    public class MenuManager
+    private List<Page> pages;
+    private Stack<Page> history;
+    private Page CurrentPage
     {
-        private List<Page> pages;
-        private Stack<Page> history;
-        private Page CurrentPage
+        get { return history.Peek(); }
+    }
+    private Dictionary<string, object> cache = new();
+
+    public MenuManager(string title)
+    {
+        Console.Title = title;
+        pages = new List<Page>();
+        history = new Stack<Page>();
+    }
+
+    public void AddPage(Page page)
+    {
+        Type type = page.GetType();
+        if (pages.Any(x => x.GetType() == type))
         {
-            get { return history.Peek(); }
+            throw new Exception($"Cannot add more than one instance of every Page: {type}");
         }
-        private Dictionary<string, object> cache = new();
+        pages.Add(page);
+    }
 
-        public MenuManager(string title)
-        {
-            Console.Title = title;
-            pages = new List<Page>();
-            history = new Stack<Page>();
-        }
+    public async Task NavigateToAsync<T>() where T : Page
+    {
+        Type pageType = typeof(T);
 
-        public void AddPage(Page page)
-        {
-            Type type = page.GetType();
-            if (pages.Any(x => x.GetType() == type))
-            {
-                throw new Exception($"Cannot add more than one instance of every Page: {type}");
-            }
-            pages.Add(page);
-        }
+        history.Push(pages.Find(x => x.GetType() == pageType)!);
 
-        public async Task NavigateToAsync<T>() where T : Page
-        {
-            Type pageType = typeof(T);
+        Console.Clear();
+        await CurrentPage.DisplayAsync();
+    }
 
-            history.Push(pages.Find(x => x.GetType() == pageType)!);
-
-            Console.Clear();
-            await CurrentPage.DisplayAsync();
-        }
-
-        public async Task NavigateHomeAsync()
-        {
-            while (history.Count > 1)
-            {
-                history.Pop();
-            }
-
-            Console.Clear();
-            await CurrentPage.DisplayAsync();
-        }
-
-        public async Task NavigateBackAsync()
+    public async Task NavigateHomeAsync()
+    {
+        while (history.Count > 1)
         {
             history.Pop();
-
-            Console.Clear();
-            await CurrentPage.DisplayAsync();
         }
 
-        public void SetCache(string key, object value)
+        Console.Clear();
+        await CurrentPage.DisplayAsync();
+    }
+
+    public async Task NavigateBackAsync()
+    {
+        history.Pop();
+
+        Console.Clear();
+        await CurrentPage.DisplayAsync();
+    }
+
+    public void SetCache(string key, object value)
+    {
+        cache.Add(key, value);
+    }
+
+    public T GetCache<T>(string key)
+    {
+        object output;
+
+        if (cache.TryGetValue(key, out output!))
         {
-            cache.Add(key, value);
+            return (T)output;
         }
 
-        public T GetCache<T>(string key)
-        {
-            object output;
-
-            if (cache.TryGetValue(key, out output!))
-            {
-                return (T)output;
-            }
-
-            throw new KeyNotFoundException(key);
-        }
+        throw new KeyNotFoundException(key);
     }
 }
